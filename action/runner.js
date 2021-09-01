@@ -14,6 +14,9 @@ async function exportRSAKey(deployKey, options) {
 
   await fs.writeFileSync(path.join(configDir, 'deploy_id_rsa'), deployKey)
 
+  const runner1 = new toolrunner.ToolRunner('chmod', ['0600', 'config/deploy_id_rsa'], options);
+  yield runner1.exec();
+  
   const runner2 = new toolrunner.ToolRunner('ssh-agent', ['-a', authSock])
   await runner2.exec()
 

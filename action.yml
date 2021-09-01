@@ -1,0 +1,28 @@
+name: 'Capistrano deploy'
+description: 'Capistrano deployment got github action and selft hosted.'
+branding:
+  icon: 'command'
+  color: 'black'
+inputs:
+  capistrano_commands:
+    description: 'The Capistrano commands to run'
+    required: true
+    default: '["deploy"]'
+  target:
+    description: 'Environment where deploy is to be performed to'
+    required: false
+  rsa_key:
+    description: 'RSA key'
+    required: true
+  working_directory:
+    description: 'The directory from which to run the deploy command'
+    required: false
+    default: ''
+  selft_hosted:
+    description: 'If using selft hosted for running'
+    required: false
+    default: false
+
+runs:
+  using: 'node12'
+  main: 'action/runner.js'

@@ -14,10 +14,6 @@ async function exportRSAKey(deployKey, options) {
 
   await fs.writeFileSync(path.join(configDir, 'deploy_id_rsa'), deployKey)
 
-  console.log(deployKey)
-  const deployTmp = await fs.readFileSync(path.join(configDir, 'deploy_id_rsa'), 'utf8')
-  console.log(deployTmp)
-
   const runner1 = new toolrunner.ToolRunner('chmod', ['0600', 'config/deploy_id_rsa'], options)
   await runner1.exec()
 
@@ -51,16 +47,22 @@ function run() {
     const deployKey = core.getInput('rsa_key')
     const workingDirectory = core.getInput('working_directory')
     const selfHosted = core.getInput('selft_hosted')
-    const options = workingDirectory ? { cwd: workingDirectory } : {}
 
-    if (!deployKey) {
-      const args = 'No deploy rsa key given'
-      core.setFailed(args)
-      reject(args)
+    try {
+      const options = workingDirectory ? { cwd: workingDirectory } : {}
+      if (!deployKey) {
+        const args = 'No deploy RSA key given'
+        core.setFailed(args)
+        reject(args)
+      }
+
+      await exportRSAKey(deployKey, options)
+      await deploy(target, commands, options)
+    } catch (e) {
+      core.setFailed(e)
     }
 
-    await exportRSAKey(deployKey, options)
-    await deploy(target, commands, options)
+    console.log(`DEPLOY KEY ${deployKey}`)
     // runner
     if (selfHosted) {
       await removeAuthSock()

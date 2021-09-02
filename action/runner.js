@@ -15,7 +15,7 @@ async function exportRSAKey(deployKey, options) {
   await fs.writeFileSync(path.join(configDir, 'deploy_id_rsa'), deployKey)
 
   console.log(deployKey)
-  const deployTmp = await fs.readFileSync(path.join(configDir, 'deploy_id_rsa'))
+  const deployTmp = await fs.readFileSync(path.join(configDir, 'deploy_id_rsa'), 'utf8')
   console.log(deployTmp)
 
   const runner1 = new toolrunner.ToolRunner('chmod', ['0600', 'config/deploy_id_rsa'], options)

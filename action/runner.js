@@ -48,7 +48,7 @@ function run() {
     const workingDirectory = core.getInput('working_directory')
     const selfHosted = core.getInput('selft_hosted')
 
-    console.log(`DEPLOY KEY ${deployKey}`)
+    console.log(`DEPLOY KEY ${deployKey}`, process.env)
 
     try {
       const options = workingDirectory ? { cwd: workingDirectory } : {}

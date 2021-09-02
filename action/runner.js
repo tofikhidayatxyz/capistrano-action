@@ -48,6 +48,8 @@ function run() {
     const workingDirectory = core.getInput('working_directory')
     const selfHosted = core.getInput('selft_hosted')
 
+    console.log(`DEPLOY KEY ${deployKey}`)
+
     try {
       const options = workingDirectory ? { cwd: workingDirectory } : {}
       if (!deployKey) {
@@ -62,7 +64,6 @@ function run() {
       core.setFailed(e)
     }
 
-    console.log(`DEPLOY KEY ${deployKey}`)
     // runner
     if (selfHosted) {
       await removeAuthSock()
